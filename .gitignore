@@ -4,6 +4,7 @@ node_modules
 /nswag
 /Ejs/node_modules
 /express/node_modules
+/node/node_modules
 
 # local env files
 .env.local

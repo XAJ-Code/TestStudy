@@ -1,0 +1,21 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "node;nodeStudy",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env NODE_ENV=dev node process/a.js"
+  },
+  "type": "commonjs",
+  "keywords": [
+    "node"
+  ],
+  "author": "zwj",
+  "license": "MIT",
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "jsdom": "^22.1.0",
+    "node-fetch": "^3.3.2"
+  }
+}
