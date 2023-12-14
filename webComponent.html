@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Component</title>
+  </head>
+  <body>
+    <template id="my-paragraph">
+        <style>
+          p {
+            color: white;
+            background-color: #666;
+            padding: 5px;
+          }
+        </style>
+        <p>My paragraph</p>
+      </template>
+      
+    <!-- <my-element>666</my-element>
+    <!-- <input is="my-input" /> -->
+    <button id="input">25</button>
+    <div style="position: relative; margin-top: 300px">
+      <popup-info
+        id="popup-info"
+        data-text="军大将军大将军大将军的"
+        img="https://mdn.github.io/web-components-examples/popup-info-box-external-stylesheet/img/alt.png"
+      ></popup-info>
+    </div>
+    <script>
+      document.documentElement.style.textAlign = "center";
+      const popupInfo = document.getElementById("popup-info");
+      const input = document.getElementById("input");
+      input.addEventListener("click", () => {
+        popupInfo.setAttribute("data-text", "djjddj");
+      });
+
+      // 2. 创建一个自定义元素---webComponent`
+      
+
+      //1. 创建一个自定义元素---webComponent
+      class PopupInfo extends HTMLElement {
+        constructor() {
+          super();
+        //   document.styleSheets
+          console.log(this.attributes);
+        }
+        //被插入DOM树时调用
+        connectedCallback() {
+          const shadow = this.attachShadow({ mode: "closed" }); //创建一个Shadow DOM元素
+          const warpper = document.createElement("span"); //创建一个span元素
+          warpper.setAttribute("class", "wrapper"); //添加class
+
+          const icon = document.createElement("span"); //创建一个i元素
+          icon.setAttribute("class", "icon"); //添加class
+          icon.setAttribute("tabindex", 0); //添加tabindex
+
+          const info = document.createElement("span"); //创建一个span元素
+          info.setAttribute("class", "info"); //添加class
+
+          const text = this.getAttribute("data-text"); //获取text属性
+          info.textContent = text; //设置textContent
+
+          let imgUrl;
+          if (this.getAttribute("img")) {
+            imgUrl = this.getAttribute("img");
+          }
+
+          const img = document.createElement("img");
+          img.src = imgUrl;
+          icon.appendChild(img);
+
+          const linkDom = document.createElement("link");
+          linkDom.setAttribute("rel", "stylesheet");
+          linkDom.setAttribute("href", "./style.css");
+
+          shadow.appendChild(linkDom);
+          shadow.appendChild(warpper);
+          warpper.appendChild(icon);
+          warpper.appendChild(info);
+        }
+      }
+
+      // 2. 创建一个自定义input
+      class MyInput extends HTMLInputElement {
+        constructor() {
+          super();
+          //   this.attachShadow({mode: 'open'});
+        }
+        static observeAttributes = ["size"];
+        connectedCallback() {
+          console.log("这个input元素");
+        }
+      }
+      // 1. 创建一个自定义元素
+      class MyElement extends HTMLElement {
+        constructor() {
+          super();
+        }
+        connectedCallback() {
+          console.log("自定义元素添加至页面");
+        }
+        disconnectedCallback() {
+          console.log("自定义元素从页面移除");
+        }
+        adoptedCallback() {
+          console.log("自定义元素从页面移动");
+        }
+      }
+      //注册自定义元素
+      customElements.define("my-element", MyElement);
+      customElements.define("my-input", MyInput, { extends: "input" });
+      customElements.define("popup-info", PopupInfo);
+    </script>
+  </body>
+</html>

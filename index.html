@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .loader {
+        width: 100px;
+        height: 100px;
+        background-color: blueviolet;
+        animation-name: ball;
+        animation-duration: 2s;
+        animation-direction: alternate;
+        animation-iteration-count: infinite
+      }
+      @keyframes ball {
+        0% {
+          transform: translateX(0);
+        }
+        /* 50% {
+          transform: translateX(500px);
+        } */
+        100% {
+          transform: translateX(100px);
+        }
+      }
+    </style>
+    <!-- <script src="./work.js"></script> -->
+    <!-- <script src="./index.js"></script> -->
+  </head>
+  <body>
+    <div class="loader"></div>
+    <script>
+      // const worker = new Worker("./work.js");
+      // worker.postMessage("hello");
+      // worker.addEventListener("message", (e) => {
+      //   console.log(e.data);
+      // });
+    </script>
+  </body>
+</html>
