@@ -1,3 +1,10 @@
-node_modules/
-EJS/node_modules/
-express/node_modules/
+.DS_Store
+node_modules
+/dist
+/nswag
+.Ejs/node_modules
+/express/node_modules
+
+# local env files
+.env.local
+.env.*.local
