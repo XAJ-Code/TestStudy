@@ -2,7 +2,7 @@
 node_modules
 /dist
 /nswag
-.Ejs/node_modules
+/Ejs/node_modules
 /express/node_modules
 
 # local env files
