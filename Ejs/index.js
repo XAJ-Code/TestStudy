@@ -60,6 +60,7 @@ fs.watchFile('./markdown.md', (curr,prev) => {
         init(()=>{
             // 调用browse对象的reload方法刷新页面
             browse.reload()
+            browse.notify("文件已更新，正在重新加载...")
         });
     }
 

@@ -18,4 +18,4 @@ fs.writeFileSync('./index.html', html);
 #### BrowserSync--一个强大的开发工具，它可以帮助您实时预览和同步您的网页更改。当您对Markdown文件进行编辑并将其转换为HTML时，BrowserSync可以自动刷新您的浏览器，使您能够即时查看转换后的结果。
 * [BrowserSync](https://browsersync.io/docs)
 * 在浏览器中实时预览和同步您的网页更改
-* 会在本地开启一个服务
+* 会在本地开启一个服务---test
