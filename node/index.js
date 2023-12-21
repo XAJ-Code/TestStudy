@@ -2,7 +2,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 //console.log(__dirname,__filename)//这是在commjs中的规范
-//import.meta.url--当前作用上下文的元信息
+//import.meta.url--当前作用上下文的元信息---es2022之后才有点一个信息，读取到当前模块文件的路径
 console.log(fileURLToPath(import.meta.url));//fileURLToPath这是在esm中的规范===commjs中的__fileName
 console.log(path.dirname(fileURLToPath(import.meta.url)));//这是在esm中的规范 ===commjs中的__dirname
 console.log(path.resolve());//解析相对路劲,返回当前绝对路径，例：'./index'--->返回的是D:\my\studyNodeJs\node(不包括文件)

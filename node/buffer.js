@@ -8,6 +8,8 @@ buf1.write('a')
 buf1.write('b',1,'utf-8')
 console.log(buf1)
 
+//buffer是一个二进制缓冲区
+
 fs.readFile('../../../../../../code/若依/RuoYi-App/static/images/profile.jpg',(err,data)=>{
     if(err){
         console.log(err)
