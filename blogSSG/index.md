@@ -3,8 +3,8 @@
 layout: home
 
 hero:
-  name: "个人博客"
-  text: "代码知识点归纳、记录"
+  name: "Personal Blog"
+  text: "小阿俊的知识库"
   tagline: My great project tagline
   actions:
     - theme: brand

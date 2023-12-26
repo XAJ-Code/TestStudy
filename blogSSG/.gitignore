@@ -1,2 +1,4 @@
 /dist
 /node_modlues
+.vitepress/dist
+.vitepress/cache

@@ -12,10 +12,12 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '示例', link: '/src/examples/markdown-examples' }
     ],
-
+    search:{
+      provider: 'local'
+    },
     sidebar: [
       {
-        text: 'Examples',
+        text: '开始',
         items: [
           { text: 'Markdown 示例', link: '/src/examples/markdown-examples' },
           { text: '运行时API 示例', link: '/src/examples/api-examples' }
