@@ -18,9 +18,17 @@ export default defineConfig({
     sidebar: [
       {
         text: '开始',
+        collapsed: false,
         items: [
           { text: 'Markdown 示例', link: '/src/examples/markdown-examples' },
           { text: '运行时API 示例', link: '/src/examples/api-examples' }
+        ]
+      },
+      {
+        text:'web API合集',
+        collapsed:false,
+        items:[
+          { text: 'web Serial串口', link: '/src/webAPI/webSerial' }
         ]
       }
     ],
