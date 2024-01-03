@@ -5,6 +5,7 @@ const app = createSSRApp({
     template: `<div>{{name}}</div>`,
     data: () => ({ name: '晓澳军' }),
 })
+// console.log(app._component.template);
 renderToString(app).then((html)=>{
     console.log(html)
 })
