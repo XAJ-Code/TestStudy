@@ -9,7 +9,7 @@ import HelloWorld from './components/HelloWorld.vue'
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
-      <h1 class="text-3xl font-bold underline">Vue 3 + TypeScript + Vite</h1>
+      <h1 class="text-3xl font-bold underline bg-red-600">Vue 3 + TypeScript + Vite</h1>
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
