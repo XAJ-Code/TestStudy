@@ -4,7 +4,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "小阿俊的博客",
   description: "代码知识点归纳",
-  head:[['link', { rel: 'icon', href: '/favicon.ico' }]],
+  head: [['link', { rel: 'icon', href: '/favicon.ico' }]],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: '/logo.svg',
@@ -12,7 +12,7 @@ export default defineConfig({
       { text: '首页', link: '/' },
       { text: '示例', link: '/src/examples/markdown-examples' }
     ],
-    search:{
+    search: {
       provider: 'local'
     },
     sidebar: [
@@ -25,10 +25,20 @@ export default defineConfig({
         ]
       },
       {
-        text:'web API合集',
-        collapsed:false,
-        items:[
+        text: 'web API合集',
+        collapsed: false,
+        items: [
           { text: 'web Serial串口', link: '/src/webAPI/webSerial' }
+        ]
+      },
+      {
+        text: 'NodeJs知识点',
+        collapsed: false,
+        items: [
+          { text: 'nodeJs第一章概述', link: '/src/nodeJs/node(chapter1)' },
+          { text: 'nodeJs第二章Bufer', link: '/src/nodeJs/NodeJS内置模块之buffer' },
+          { text: 'nodejs第三章Crypoto', link: '/src/nodeJs/NodeJs内置模块-crypto', },
+          { text: 'nodejs第四章Events', link: '/src/nodeJs/Node.js中的Events模块', }
         ]
       }
     ],

@@ -15,7 +15,6 @@
   "include": [
     "src/**/*.ts",
     "vitePress/**/*.ts"
-    // 其他需要包含的文件路径...
   ],
   "exclude": [
     "**/node_modules/**",
