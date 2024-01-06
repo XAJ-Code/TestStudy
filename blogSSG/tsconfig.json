@@ -13,8 +13,8 @@
     "lib": ["esnext", "dom", "dom.iterable"]
   },
   "include": [
-    "src/**/*.ts",
-    "vitePress/**/*.ts"
+    "./src/**/*.ts",
+    "./vitePress/**/*.ts"
   ],
   "exclude": [
     "**/node_modules/**",
