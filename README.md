@@ -5,10 +5,9 @@
 4. EJS--利用marked和ejs自动转换为html文档
 5. vite使用及原理
 6. preload和prefetch性能优化
-   ```html
-   <!DOCTYPE html>
+ ```html
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,4 +26,4 @@
 </body>
 
 </html>
-   ```
+```
