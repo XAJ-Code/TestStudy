@@ -14,14 +14,14 @@
   },
   "include": [
     "./src/**/*.ts",
-    "./vitePress/**/*.ts"
+    "./.vitePress/**/*.ts",
   ],
   "exclude": [
-    "**/node_modules/**",
-    "**/dist/**",
-    "template",
-    "bin",
-    "scripts"
+    "./**/node_modules/**",
+    "./**/dist/**",
+    "./template",
+    "./bin",
+    "./scripts"
     // 其他需要排除的文件或目录路径...
   ]
 }
