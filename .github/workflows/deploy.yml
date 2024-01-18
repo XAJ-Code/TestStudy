@@ -37,6 +37,7 @@ jobs:
 
       - name: Setup Node
         uses: actions/setup-node@v3
+        run: cd blogSSG
         with:
           node-version: 16
           cache: npm # 或 pnpm / yarn
