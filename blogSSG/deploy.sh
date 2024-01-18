@@ -18,7 +18,7 @@ git commit -m 'deploy'
 git push -f git@github.com:Johno666/TestStudy.git master:github-pages
 
 # 提交所有代码到github
-cd ../../../
+cd ../../
 git add .
 git cm -m 'update'
 git push
