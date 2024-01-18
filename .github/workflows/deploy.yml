@@ -33,8 +33,8 @@ jobs:
           registry-url: https://registry.npmjs.org/
           version: 18
 
-      - name: Change to VitePress directory
-        run: cd blogSSG
+      # - name: Change to VitePress directory
+      #   run: cd blogSSG
 
       # - name: Setup Node
       #   uses: actions/setup-node@v3
