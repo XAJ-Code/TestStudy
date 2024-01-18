@@ -36,11 +36,13 @@ jobs:
       # - uses: oven-sh/setup-bun@v1 # 如果使用 Bun，请取消注释
       - name: Change to VitePress directory
         run: cd blogSSG
+
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: npm # 或 pnpm / yarn
+
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Install dependencies
