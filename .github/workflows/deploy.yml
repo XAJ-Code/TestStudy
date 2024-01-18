@@ -6,7 +6,7 @@ on:
   # 在针对 `main` 分支的推送上运行。如果你
   # 使用 `master` 分支作为默认分支，请将其更改为 `master`
   push:
-    branches: [main]
+    branches: main
 
   # 允许你从 Actions 选项卡手动运行此工作流程
   workflow_dispatch:
@@ -38,10 +38,10 @@ jobs:
         run: cd blogSSG
 
       - name: 安装 npm
-        uses: npm/action-setup@v2
+        uses: pnpm/action-setup@v2
         with:
           run_install: true
-          version: 18
+          version: 8
 
       - name: Setup Node
         uses: actions/setup-node@v3
