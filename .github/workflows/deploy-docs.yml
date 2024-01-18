@@ -33,16 +33,15 @@ jobs:
           version: 8
           path: ./blogSSG
 
-       - name: 切换到blogSS目录
+      - name: 切换到blogSS目录
         run: |
           cd ./blogSSG   
-          npm install  # or pnpm install or yarn install
-          npm run build
-      # - name: 设置 Node.js
-      #   uses: actions/setup-node@v3
-      #   with:
-      #     node-version: 18
-      #     cache: pnpm
+        
+      - name: 设置 Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: pnpm
 
 
       - name: 构建文档
