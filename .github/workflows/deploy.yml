@@ -36,12 +36,12 @@ jobs:
       - name: Change to VitePress directory
         run: cd blogSSG
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-          cache: npm
-          clear-node-cache: true
+      # - name: Setup Node
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 18
+      #     cache: npm
+      #     clear-node-cache: true
 
       - name: Build with VitePress
         run: |
