@@ -35,12 +35,11 @@ jobs:
 
       - name: 设置 Node.js
         uses: actions/setup-node@v3
-        run: |
-          cd ./blogSSG
         with:
           node-version: 18
           cache: pnpm
-          path: ./blogSSG
+          source: ./blogSSG
+          destination: ./blogSSG
 
 
       - name: 构建文档
