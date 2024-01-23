@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      //利用fetch请求图片，实现下载进度
+      //fetch请求的请求头中有Content-Length字段，可以获取到图片的大小，然后利用XMLHttpRequest对象来获取图片的下载进度。
+      //fetch返回到响应的body属性是一个可读流，可以通过该流获取图片的二进制数据。
+      //阮一峰博客链接:https://www.ruanyifeng.com/blog/2020/12/fetch-tutorial.html
+      //浏览器stream流的文档地址:https://developer.mozilla.org/zh-CN/docs/Web/API/ReadableStream
+      async function fetchUrl() {
+        let response = await fetch("./2.jpg");
+        let readableStrem = await response.body.getReader();
+        let contentLength = response.headers.get("Content-Length");
+        console.log(response.headers.get("Content-Length"))
+        let receivedLength = 0;
+        let chunks = [];
+        while (true) {
+          let { done, value } = await readableStrem.read();
+          if (done) {
+            break;
+          }
+          chunks.push(value);
+          receivedLength += value.length;
+        //   console.log(`Received ${receivedLength} of ${contentLength}`);
+          console.log(`已经接受${((receivedLength / contentLength)*100).toFixed(2)}%`);
+        }
+        let blob = new Blob(chunks);
+        let url = URL.createObjectURL(blob);
+        const img = document.createElement("img")
+        img.src = url;
+        document.body.appendChild(img);
+        // let url = URL.createObjectURL(blob);
+        // let a = document.createElement("a");
+        // document.body.appendChild(a);
+        // a.href = url;
+        // a.download = "2.jpg"; //设置下载文件名
+        // a.click();
+        // URL.revokeObjectURL(url); //释放blob对象
+        // document.body.removeChild(a);
+        // return blob;
+      }
+      fetchUrl()
+    </script>
+  </body>
+</html>
