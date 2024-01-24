@@ -31,6 +31,11 @@
         }
         let blob = new Blob(chunks);
         let url = URL.createObjectURL(blob);
+        // const video = document.createElement("video");
+        // video.src = url;
+        // video.controls = true;
+        // document.body.appendChild(video);
+
         const img = document.createElement("img")
         img.src = url;
         document.body.appendChild(img);
