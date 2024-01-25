@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import { useCounterStore } from './stores/counter';
+const piniaTest = useCounterStore()
+
+//监听pinia中state状态
+piniaTest.$subscribe((mutation, state) =>{
+    console.log('mutation',mutation)
+    console.log('state',state)
+})
 </script>
 
 <template>
@@ -9,6 +17,8 @@ import HelloWorld from './components/HelloWorld.vue'
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
+      <h1>{{ piniaTest.count }}</h1>
+      <!-- <iframe src="http://119.45.154.113/mes/label/index" width="100%" height="100%"></iframe> -->
       <h1 class="text-3xl font-bold underline bg-red-600">Vue 3 + TypeScript + Vite</h1>
       <nav>
         <RouterLink to="/">Home</RouterLink>

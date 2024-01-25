@@ -10,3 +10,10 @@ export const useCounterStore = defineStore('counter', () => {
 
   return { count, doubleCount, increment }
 })
+
+//定义一个选项式的pinia仓库
+export const useSelectedStore = defineStore('selected',{
+  state:()=>({}),//这是一个箭头函数,表示return了一个空对象,相当于省略了return,也等价于()=>{return{}}
+  getters:{},
+  actions:{},
+})
