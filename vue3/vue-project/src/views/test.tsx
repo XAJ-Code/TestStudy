@@ -1,7 +1,7 @@
-import { defineComponent, ref } from "vue"
+import { defineComponent} from "vue"
 
 //第一种方式-导出一个函数
-const a = ref(1)
+// const a = ref(1)
 // export default function renderDom (props){
 //     return(
 //         <>
@@ -40,7 +40,6 @@ export default defineComponent({
     setup(props:any, ctx:any) {
         return () => (
             <>
-            <h1 style="color:red">给我渲染+{a.value}+哈哈哈哈哈</h1>
             <h2>{ctx.slots.default()}</h2>
             <h3>{props.name}</h3>
             </>

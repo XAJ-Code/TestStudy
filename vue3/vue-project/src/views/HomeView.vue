@@ -2,12 +2,14 @@
   <div ref="div" id="as">
     <my-div></my-div>
     <renderDom :name="'855'">
-      <p>我睡</p>
+      <p>我是通过jsx语法来渲染出来的</p>
     </renderDom>
-    <button>点我</button>
+    <!-- <button>点我</button> -->
     <my-vue-elel></my-vue-elel>
     <!-- <HelloWorld></HelloWorld> -->
     <div>Mouse position is at: {{ x }}, {{ y }}</div>
+
+    <h1>{{ count }}</h1>
   </div>
 </template>
 <!-- 组合式API写法：直接返回h函数，交给模板去渲染 -->
@@ -17,14 +19,17 @@ import renderDom from './test'
 import { useMouse } from '@/hooks/mouse'
 import myVueElel from './myVueElement'
 const { x, y } = useMouse()
-import { h, watchPostEffect, watch, ref, provide, readonly,onRenderTracked,onRenderTriggered } from 'vue';
+import { useCounterStore } from '@/stores/counter'
+const store = useCounterStore()
+const { count } = store
+import { h, watchPostEffect, watch, ref, provide, readonly, onRenderTracked, onRenderTriggered } from 'vue';
 //调试查看哪些依赖正在被使用
-onRenderTracked(() =>{
+onRenderTracked(() => {
   // eslint-disable-next-line no-debugger
   // debugger
 })
 //确定哪个依赖正在触发更新
-onRenderTriggered(()=>{
+onRenderTriggered(() => {
 
 })
 
@@ -54,7 +59,7 @@ const myDiv = () => {
   //h函数返回的是一个虚拟DOM
   return h('div',
     Array.from({ length: 2 }).map(() => {
-      return h('p', { class: 'p' }, 'hi')
+      return h('p', { class: 'p' }, '我是通过h函数渲染出来的')
     })
   )
 }
