@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let source = "";
+      if (!!window.EventSource) {
+        source = new EventSource("http://localhost:89/sse/");
+      } else {
+        throw new Error("当前浏览器不支持SSE");
+      }
+      //对于建立链接的监听
+      source.onopen = function (event) {
+        console.log(source.readyState);
+        console.log("长连接打开");
+      };
+
+      //对服务端消息的监听
+      source.onmessage = function (event) {
+        console.log(event);
+        const ui = document.createElement("ul")
+        document.body.appendChild(ui)
+        const li = document.createElement("li")
+        li.textContent = event.data
+        ui.appendChild(li)
+        // console.log(JSON.parse(event.data));
+        // console.log("收到长连接信息");
+        // let li = createLi(JSON.parse(event.data));
+        // document.getElementById("ul").appendChild(li);
+      };
+
+      //对断开链接的监听
+      source.onerror = function (event) {
+        console.log(source.readyState);
+        console.log("长连接中断");
+      };
+    </script>
+  </body>
+</html>
