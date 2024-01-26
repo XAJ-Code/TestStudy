@@ -1,4 +1,5 @@
 //原型链
+//对象描述符--https://tsejx.github.io/javascript-guidebook/object-oriented-programming/object-understand/attributes-object#%E6%95%B0%E6%8D%AE%E5%B1%9E%E6%80%A7
 /**
  *  - Prototype是什么？---被称为原型或者原型对象
  * 1. prototype是【函数】的一个属性
