@@ -28,6 +28,23 @@
       ></popup-info>
     </div>
     <script>
+      //对象描述符-defineProperty
+      var obj={};
+      Object.defineProperty(obj, "prop",{
+        //前四项表示数据属性
+        writable:true,//是否可修改
+        configurable:true,//是否可被delete删除
+        enumerable:true,//是否可枚举for..in..循环
+        value:'123',//它的值
+        // 后两项表示访问器属性
+        get:function(){//当有人读取属性时调用的函数
+          return obj['prop']
+        },
+        set:function(value){//当有人修改属性时调用的函数
+          console.log('set',value)
+        }
+      })
+
       document.documentElement.style.textAlign = "center";
       const popupInfo = document.getElementById("popup-info");
       const input = document.getElementById("input");
