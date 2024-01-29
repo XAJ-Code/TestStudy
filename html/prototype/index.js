@@ -1,5 +1,21 @@
 //原型链
 //对象描述符--https://tsejx.github.io/javascript-guidebook/object-oriented-programming/object-understand/attributes-object#%E6%95%B0%E6%8D%AE%E5%B1%9E%E6%80%A7
+var obj={};
+Object.defineProperty(obj, "prop",{
+  //前四项表示数据属性
+  writable:true,//是否可修改
+  configurable:true,//是否可被delete删除
+  enumerable:true,//是否可枚举for..in..循环
+  value:'123',//它的值
+  // 后两项表示访问器属性
+  get:function(){//当有人读取属性时调用的函数
+    return obj['prop']
+  },
+  set:function(value){//当有人修改属性时调用的函数
+    console.log('set',value)
+  }
+})
+
 /**
  *  - Prototype是什么？---被称为原型或者原型对象
  * 1. prototype是【函数】的一个属性
