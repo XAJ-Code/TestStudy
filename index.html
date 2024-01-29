@@ -31,7 +31,20 @@
   </head>
   <body>
     <div class="loader"></div>
+    <ul id="list"></ul>
     <script>
+      const ul = document.getElementById("list");
+      const fragment = document.createDocumentFragment();
+      const array = new Array(10).fill(0).map((item, index) => `<li>${index}</li>`);
+
+      array.forEach(item=>{
+        const li = document.createElement("li")
+        li.innerHTML = item
+        fragment.appendChild(li)
+      })
+    ul.appendChild(fragment)
+
+
       // const worker = new Worker("./work.js");
       // worker.postMessage("hello");
       // worker.addEventListener("message", (e) => {
