@@ -1,6 +1,6 @@
 import express from 'express';
 import fs from 'node:fs';
-// import fsExtra from 'fs-extra';
+import fsExtra from 'fs-extra';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import cors from 'cors';
@@ -66,6 +66,10 @@ app.post('/slice/upload/:filename', async (req, res) => {
     const chunkPath = path.resolve(chunkDir, chnkFilename as string)
     //创建可读流
     const ws = fs.createWriteStream(chunkPath)
+    // 请求取消时停止写入
+    req.on("aborted", () => {
+        ws.close();
+    });
     // 将可读流中的数据写入到可写流中，完成文件上传
     await pipeStream(req, ws);
     res.json({ message: `切片${chnkFilename}上传成功`, status: 200 })
@@ -108,6 +112,40 @@ app.post('/slice/merge/:filename', async (req, res) => {
         return res.json({ message: "切片合并成功", status: 200 })
     }
 })
+
+//验证文件是否存在接口
+app.get("/verify/:filename", async (req, res) => {
+    // 获取文件名
+    const { filename } = req.params;
+    // 拼接文件路径
+    const filePath = path.resolve(uploadDir, filename);
+    // 判断文件是否存在
+    const isExist = await fsExtra.pathExists(filePath);
+    if (isExist) {
+        res.json({ success: true, needUpload: false });
+    } else {
+        // 拼接切片文件夹路径
+        const chunkDir = path.resolve(tempDir, filename);
+        // 判断切片文件夹是否存在
+        const hasChunks = await fsExtra.pathExists(chunkDir);
+        let uploadedChunks: any[] = [];
+        if (hasChunks) {
+            // 读取切片文件夹中的文件名
+            const chunkFilenames = await fsExtra.readdir(chunkDir);
+            // 获取切片文件的大小
+            uploadedChunks = await Promise.all(
+                chunkFilenames.map(async (chunkFilename: string) => {
+                    const { size } = await fsExtra.stat(path.resolve(chunkDir, chunkFilename));
+                    return { chunkFilename, size };
+                })
+            );
+            res.json({ success: true, needUpload: true, uploadedChunks });
+        } else {
+            res.json({ success: true, needUpload: true, uploadedChunks });
+        }
+    }
+});
+
 
 /**
  * 数据从可读流流向可写流

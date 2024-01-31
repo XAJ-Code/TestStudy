@@ -13,6 +13,7 @@
     <!-- 按钮添加上点击事件 -->
     <el-button @click="handleUpload">开始上传(不切片)</el-button>
     <el-button @click="handleSliceUpload" :loading="calculating">切片上传</el-button>
+    <el-button @click="handleCancel" type="danger">取消上传</el-button>
     <div class="progress" v-if="progressInfo.percentage > 0">
       <span>{{ progressInfo.name }}</span>
       <el-progress :percentage="progressInfo.percentage"></el-progress>
@@ -33,6 +34,7 @@ import axiosInstans from './utils/axiosInstans'
 import { getFileName } from './utils/getFileName'
 import { createChunks } from './utils/createChunk'
 import type { chunkInfo } from './utils/createChunk'
+import axios, { CancelTokenSource } from 'axios';
 const isDragover = ref(false);//是否拖放
 const calculating = ref<Boolean>(false);//上传按钮的加载状态
 //已选择的文件
@@ -47,7 +49,14 @@ const progressInfo = reactive({
 })
 //切片进度条信息
 const sliceProgressInfo = reactive<Map<string, number>>(new Map())
-
+// 取消请求的 token 数组
+const cancelTokens =reactive<Array<CancelTokenSource>>([]);
+// 取消所有请求
+const handleCancel = () => {
+  cancelTokens.forEach((cancelToken:CancelTokenSource) => {
+    cancelToken.cancel();
+  });
+};
 
 //切片上传
 const handleSliceUpload = async () => {
@@ -67,6 +76,8 @@ const handleSliceUpload = async () => {
   const chunks = createChunks(selectedFile.file, CHUNK_SIZE, fileName)
   //上传切片
   const request = chunks.map((chunkInfo: chunkInfo) => {
+    const cancelToken = axios.CancelToken.source();
+    cancelTokens.push(cancelToken);
     return axiosInstans.post(`slice/upload/${fileName}`, chunkInfo.chunk, {
       headers: {
         "Content-Type": "application/octet-stream"
@@ -78,14 +89,19 @@ const handleSliceUpload = async () => {
         if (!progressEvent.total) return
         sliceProgressInfo.set(chunkInfo.chunkFilename, Math.round((progressEvent.loaded * 100) / progressEvent.total))
       },
+      cancelToken: cancelToken.token
     })
   })
   try {
     await Promise.all(request)
     ElMessage.success('切片上传完成')
     await handleMerge(fileName)
-  }catch (error) {
-    ElMessage.error('切片上传失败'+error)
+  } catch (error) {
+    if (axios.isCancel(error)) {
+      ElMessage.warning("上传已取消");
+    } else {
+      ElMessage.error("上传失败");
+    }
   }
 }
 
