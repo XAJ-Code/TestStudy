@@ -1,10 +1,9 @@
 import express from 'express';
 import fs from 'node:fs';
-import fsExtra from 'fs-extra';
+// import fsExtra from 'fs-extra';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import cors from 'cors';
-import util from 'node:util'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));//获取当前文件的绝对路径
 // 切片大小
@@ -52,26 +51,24 @@ app.post('/upload/:filename', (req, res) => {
 })
 
 //切片上传文件接口
-app.post('/slice/upload/:filename', (req, res) => {
+app.post('/slice/upload/:filename', async (req, res) => {
     //获取文件名
     const { filename } = req.params
     //切片名称
     const { chnkFilename } = req.query
     //拼接切片文件夹路径
-    const chunkDir = path.join(tempDir, filename)
+    const chunkDir = path.resolve(tempDir, filename)
     //创建切片文件夹
     if (!fs.existsSync(chunkDir)) {
         fs.mkdirSync(chunkDir)
     }
     //拼接切片文件路径
-    const chunkPath = path.join(chunkDir, chnkFilename as string)
+    const chunkPath = path.resolve(chunkDir, chnkFilename as string)
     //创建可读流
     const ws = fs.createWriteStream(chunkPath)
-    req.pipe(ws)
-    req.on('end', () => {
-        res.json({ message: `切片${chnkFilename}上传成功`, status: 200 })
-        ws.close()
-    })
+    // 将可读流中的数据写入到可写流中，完成文件上传
+    await pipeStream(req, ws);
+    res.json({ message: `切片${chnkFilename}上传成功`, status: 200 })
 })
 
 //切片合并接口
@@ -89,33 +86,40 @@ app.post('/slice/merge/:filename', async (req, res) => {
     } else {
         //按照切片索引进行排序
         files.sort((a, b) => Number(a.split('-')[0]) - Number(b.split('-')[0]))
-        //拼接真正上传的文件夹路径
-        const targetDir = path.join(uploadDir, filename)
+        //拼接真正上传的文件夹路径 
+        const targetFilePath = path.resolve(uploadDir, filename)
         //创建写入文件的异步任务
-        const writeTasks = files.map((chunkFile, index) => {
+        const writeTasks = files.map((chunkFilename, index) => {
             //拼接切片文件夹的路径
-            const chunkPath = path.join(chunkDir, chunkFile)
+            const chunkPath = path.resolve(chunkDir, chunkFilename)
             //创建可读流
             const rs = fs.createReadStream(chunkPath)
             //创建可写流，用于合并切片文件,flags-a代表追加写入
-            const ws = fs.createWriteStream(targetDir, { flags: 'a', start: index * CHUNK_SIZE })
-            rs.pipe(ws)
-            ws.on('close', () => {
-                //切片写入完成，关闭可读流
-                rs.close()
-                ws.close()
-            })
+            const start = index * CHUNK_SIZE; // 计算起始位置
+            const ws = fs.createWriteStream(targetFilePath, { flags: 'a', start: start })
+            return pipeStream(rs, ws)
         })
         //等待所有写入任务完成，并返回合并成功的消息和状态码200给前端
         await Promise.all(writeTasks)
         //合并完成,删除切片的临时文件夹
-        console.log(chunkDir);
-        await fsExtra.rm(chunkDir, { recursive: true, force: true });
+        // await fsExtra.rm(chunkDir, { recursive: true, force: true });
+        fs.rmSync(chunkDir, { recursive: true, force: true })
 
         return res.json({ message: "切片合并成功", status: 200 })
     }
 })
 
+/**
+ * 数据从可读流流向可写流
+ * @param {ReadableStream} rs 可读流
+ * @param {WritableStream} ws 可写流
+ * @returns 返回一个Promise，当流结束时，Promise会被resolve
+ */
+function pipeStream(rs: fs.ReadStream | any, ws: fs.WriteStream) {
+    return new Promise((resolve, reject) => {
+        rs.pipe(ws).on("finish", resolve).on("error", reject);
+    });
+}
 
 
 //启动服务
