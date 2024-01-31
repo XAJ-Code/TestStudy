@@ -11,11 +11,18 @@
       </el-icon>
     </div>
     <!-- 按钮添加上点击事件 -->
-    <el-button @click="handleUpload">开始上传</el-button>
+    <el-button @click="handleUpload">开始上传(不切片)</el-button>
+    <el-button @click="handleSliceUpload" :loading="calculating">切片上传</el-button>
     <div class="progress" v-if="progressInfo.percentage > 0">
       <span>{{ progressInfo.name }}</span>
       <el-progress :percentage="progressInfo.percentage"></el-progress>
     </div>
+    <template v-if="sliceProgressInfo.size > 0">
+      <div class="progress" v-for="(value, key) in sliceProgressInfo" :key="key">
+        <span>{{ value[0] }}</span>
+        <el-progress :percentage="value[1]"></el-progress>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -23,22 +30,75 @@
 import { ElMessage } from 'element-plus';
 import { reactive, ref } from 'vue';
 import axiosInstans from './utils/axiosInstans'
-
+import { getFileName } from './utils/getFileName'
+import { createChunks } from './utils/createChunk'
+import type { chunkInfo } from './utils/createChunk'
 const isDragover = ref(false);//是否拖放
+const calculating = ref<Boolean>(false);//上传按钮的加载状态
 //已选择的文件
 const selectedFile = reactive({
   url: "",
   file: null as File | null
 })
-//进度条信息
+//进度条信息--不切片
 const progressInfo = reactive({
   name: '',
-  percentage: 0
+  percentage: 0,
 })
+//切片进度条信息
+const sliceProgressInfo = reactive<Map<string, number>>(new Map())
 
 
-//开始上传
-const handleUpload = () => {
+//切片上传
+const handleSliceUpload = async () => {
+  if (!selectedFile.file) {
+    ElMessage.error('请先选择文件');
+    return;
+  }
+  //清空进度条map
+  sliceProgressInfo.clear()
+  calculating.value = true;
+  //利用cropto(不是node中的,是web环境下自带的)获取文件摘要,唯一文件名称
+  const fileName = await getFileName(selectedFile.file)
+  calculating.value = false
+
+  const CHUNK_SIZE = 1024 * 1024 * 100 //100MB
+  //获取文件切片
+  const chunks = createChunks(selectedFile.file, CHUNK_SIZE, fileName)
+  //上传切片
+  const request = chunks.map((chunkInfo: chunkInfo) => {
+    return axiosInstans.post(`slice/upload/${fileName}`, chunkInfo.chunk, {
+      headers: {
+        "Content-Type": "application/octet-stream"
+      },
+      params: {
+        chnkFilename: chunkInfo.chunkFilename
+      },
+      onUploadProgress(progressEvent) {
+        if (!progressEvent.total) return
+        sliceProgressInfo.set(chunkInfo.chunkFilename, Math.round((progressEvent.loaded * 100) / progressEvent.total))
+      },
+    })
+  })
+  try {
+    await Promise.all(request)
+    ElMessage.success('切片上传完成')
+    await handleMerge(fileName)
+  }catch (error) {
+    ElMessage.error('切片上传失败'+error)
+  }
+}
+
+//合并
+const handleMerge = async (fileName: string) => {
+  //合并切片
+  await axiosInstans.post(`/slice/merge/${fileName}`)
+  ElMessage.success('文件合并完成')
+}
+
+
+//开始上传--不切片
+const handleUpload = async () => {
   if (!selectedFile.file) {
     ElMessage.error('请先选择文件');
     return;
@@ -49,8 +109,8 @@ const handleUpload = () => {
       'Content-Type': 'application/octet-stream',
     },
     onUploadProgress: (progressEvent) => {
-      console.log("🚀 ~ file: App.vue:52 ~ handleUpload ~ progressEvent:", progressEvent)
-      if(!progressEvent.total) return
+      // console.log("🚀 ~ file: App.vue:52 ~ handleUpload ~ progressEvent:", progressEvent)
+      if (!progressEvent.total) return
       const percentage = Math.round((progressEvent.loaded * 100) / progressEvent.total);
       progressInfo.name = selectedFile?.file ? selectedFile.file.name : '未知文件';
       progressInfo.percentage = percentage;
