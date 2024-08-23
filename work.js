@@ -14,3 +14,4 @@ let endTime = new Date().getTime();
 const totalTime = endTime - beginTime;
 const miao = Math.floor(totalTime / 1000);
 self.postMessage(`我计算的和：${sum},共耗时${miao}秒`);
+//调价用worker
