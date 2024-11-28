@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>AI 聊天</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .chat-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            z-index: 100;
+        }
+
+        .new-chat {
+            padding: 6px 12px;
+            background-color: #f8f9fa;
+            color: #333;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .new-chat:hover {
+            background-color: #e9ecef;
+            border-color: #ccc;
+        }
+
+        .new-chat svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        #messages {
+            padding: 20px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div class="chat-header">
+            <button onclick="newChat()" class="new-chat">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                新建对话
+            </button>
+        </div>
+        <div id="messages"></div>
+        <div id="input-container">
+            <input type="text" id="user-input" placeholder="输入您的问题...按回车发送">
+            <button onclick="sendMessage()">发送</button>
+        </div>
+    </div>
+    <script src="client.js"></script>
+</body>
+</html> 
