@@ -14,3 +14,6 @@ npm install esbuild
 * 使用esbuild构建项目时，需要使用esbuild的API。
 * 天生支持TypeScript、JSX、CSS等文件，无需配置。
 * 分包、压缩、混淆、Tree Shaking等功能一应俱全。
+## 缺点
+- 不支持热更新
+- 不支持缓存
