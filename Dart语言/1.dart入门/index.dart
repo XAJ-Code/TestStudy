@@ -1,3 +1,5 @@
+
+
 class Person {
   String name;
   int age;
@@ -7,7 +9,15 @@ class Person {
   }
 }
 
+ //拼接字符串
+ String sayHello(){
+  const String name = "张三";
+  const age = '18';
+  final String str = name + "今年" + age + "岁";
+  print(str);
+  return str;
+ }
+
 void main() {
-  var p = Person("Tom", 20);
-  p.sayHello();
+  sayHello();
 }
