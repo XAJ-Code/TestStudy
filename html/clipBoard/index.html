@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // navigator.clipboard.read();读取excel中的数据，返回一个promise，resolve一个ClipboardItemList对象
+    //登录deepSeek.com，查看详情
+    document.body.addEventListener(
+      'copy',
+      async (e) => {
+        const data = await navigator.clipboard.read();
+        console.log(data);
+        for (const item of data) {
+          if (item.types.includes('text/plain')) {
+            item.getType('text/plain').then(blob => {
+              blob.text().then(text => {
+                console.log('剪贴板文本内容:', text);
+              });
+            });
+          }
+          if (item.types.includes('image/png')) {
+            item.getType('image/png').then(blob => {
+              console.log('剪贴板图片内容:', blob);
+              const href = URL.createObjectURL(blob);
+              const link = document.createElement('a');
+              link.href = href;
+              link.download = 'clipboard.png';
+              link.click();
+              document.body.removeChild(link);
+              URL.revokeObjectURL(href);
+            });
+          }
+          if (item.types.includes('text/html')) {
+            item.getType('text/html').then(blob => {
+              blob.text().then(html => {
+                console.log('剪贴板中的 HTML 数据:', html);
+                // 解析 HTML 并渲染为表格
+                // renderTableFromHTML(html);
+              });
+            });
+          }
+        }
+      }
+    )
+  </script>
+</body>
+
+</html>
