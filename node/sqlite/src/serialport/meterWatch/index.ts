@@ -50,7 +50,7 @@ class MeterReader {
       const isYardMode = unitResponse.data[0] === 1;
       const conversionFactor = isYardMode ? 0.9144 : 1;
       // 4. 精确计算（避免浮点误差）
-      const actualValue = (Math.floor(rawValue * 0.1) * 0.001) * conversionFactor;
+      const actualValue = (Math.floor(rawValue * 0.1) * 0.01) * conversionFactor;
 
       // 计算实际米数: Floor(value × 0.1) × 0.001
       // const meters = Math.floor(rawValue * 0.1) * 0.001;
@@ -58,7 +58,7 @@ class MeterReader {
       return {
         rawValue: rawValue,
         meters: actualValue,
-        displayValue: actualValue * 10, // 显示精度0.01米
+        displayValue: actualValue, // 显示精度0.01米
         unit: isYardMode ? 'Y' : 'm',
       };
 
